@@ -1,3 +1,3 @@
 # webpack-stuff
 
-react + firebase + webpack
+ES6 and ES7 + React + ALT Flux + firebase + webpack
