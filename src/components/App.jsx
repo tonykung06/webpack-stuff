@@ -1,8 +1,6 @@
 import React from 'react';
-import MessageList from './MessageList';
-import ChannelList from './ChannelList';
-import MessageBox from './MessageBox';
 import {Styles, AppBar} from 'material-ui';
+import {RouteHandler} from 'react-router';
 
 const themeManager = new Styles.ThemeManager();
 const Colors = Styles.Colors;
@@ -33,18 +31,7 @@ class App extends React.Component {
 		return (
 			<div>
 				<AppBar title="Awesome Chat App" />
-				<div style={{
-					display: 'flex',
-					flexWrap: 'wrap',
-					flexDirection: 'row',
-					maxWidth: 1200,
-					width: '100%',
-					margin: '30px auto'
-				}}>
-					<ChannelList />
-					<MessageList />
-				</div>
-				<MessageBox />
+				<RouteHandler />
 			</div>
 		);
 	}

@@ -1,25 +1,64 @@
 import React from 'react';
 import Channel from './Channel';
-import {Card, List} from 'material-ui';
+import {Card, List, CircularProgress} from 'material-ui';
+import connectToStores from 'alt/utils/connectToStores';
+import ChatStore from '../stores/ChatStore';
+import _ from 'lodash';
 
+@connectToStores
 class ChannelList extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.state = {
-			channels: [
-				'Dogs',
-				'Cats'
-			]
-		};
+		// ChatStore.getChannels();
+	}
+
+	componentDidMount() {
+		this.selectedChannel = this.props.params.channel;
+		ChatStore.getChannels(this.selectedChannel);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (this.selectedChannel !== nextProps.params.channel) {
+			this.selectedChannel = nextProps.params.channel;
+			ChatStore.getChannels(this.selectedChannel);
+		}
+	}
+
+	static getStores() {
+		return [ChatStore];
+	}
+
+	static getPropsFromStores() {
+		return ChatStore.getState();
 	}
 
 	render() {
-		const channelNodes = this.state.channels.map((item, index) => {
+		if (!this.props.channels) {
 			return (
-				<Channel key={index} channel={item} />
+				<Card style={{
+					flexGrow: 1
+				}}>
+					<CircularProgress
+						mode="indeterminate"
+						style={{
+							paddingTop: 20,
+							paddingBottom: 20,
+							margin: '0 auto',
+							display: 'block',
+							width: 60
+						}} />
+				</Card>
 			);
-		});
+		}
+
+		const channelNodes = _(this.props.channels).keys().map((item) => {
+			const channel = this.props.channels[item];
+
+			return (
+				<Channel key={item} channel={channel} />
+			);
+		}).value();
 
 		return (
 			<Card style={{
